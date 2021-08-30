@@ -29,7 +29,7 @@ pipeline {
                                     }
     stage('Execute Selenium Test') {
       steps {
-            bat "docker run -d uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=SmokeSuite.xml"
+            bat "docker run -d --network="host" uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
 
             }
                                 }

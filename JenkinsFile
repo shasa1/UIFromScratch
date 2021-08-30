@@ -33,14 +33,14 @@ pipeline {
 
             }
                                 }
- stage('Delete Docker Images') {
-      steps {
-
-           bat "docker-compose -f docker-compose.yml down --rmi all"
-
-           bat "docker rmi -f uiprojdockerimage$BUILD_NUMBER"
-            }
-                            }
+//  stage('Delete Docker Images') {
+//       steps {
+//
+//            bat "docker-compose -f docker-compose.yml down --rmi all"
+//
+//            bat "docker rmi -f uiprojdockerimage$BUILD_NUMBER"
+//             }
+//                             }
 
     }
   }

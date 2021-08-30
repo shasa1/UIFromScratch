@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 pipeline {
-  agent {label "linux"}
+  agent any
 
   environment {
     TAG = "demo_${env.BRANCH_NAME}_${env.BUILD_NUMBER}"

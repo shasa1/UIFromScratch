@@ -13,28 +13,20 @@ pipeline {
       }
     }
 
-    stage("Cleaning and preparing") {
+    stage("Execute DockerFile") {
       steps {
-
+      sh "docker build -t uiprojdockerimage ."
       }
     }
 
     stage('Run Selenium Tests') {
       steps {
 
-
-
-                     sh "docker build -t uiprojdockerimage ."
-
-
-
-
-
            sh "docker-compose -f docker-compose.yml up -d"
 
 
 
-            sh "docker run -d --network="host" uiprojdockerimage mvn clean test-DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
+            sh "docker run -d --network="host" uiprojdockerimage mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
 
 
 

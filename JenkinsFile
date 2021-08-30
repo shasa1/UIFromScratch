@@ -1,14 +1,61 @@
-pipeline{
-agent {dockerfile true}
+#!/usr/bin/env groovy
+pipeline {
+  agent any
 
-stages{
-stage('Test'){
-steps{
- sh """#!/bin/bash -e
-            # Wait for chromemode to be up and execute selenium tests in robottests container
-            docker run -d --network="host" uiprojdockerimage mvn test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml
+  environment {
+    TAG = "demo_${env.BRANCH_NAME}_${env.BUILD_NUMBER}"
+  }
+
+  stages {
+    stage("Checkout") {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage("Cleaning and preparing") {
+      steps {
+        sh """#!/bin/bash -e
+          git clean -dfx
+          mkdir reports
+        """
+      }
+    }
+
+    stage('Run Selenium Tests') {
+      steps {
+        try {
+        sh """#!/bin/bash -e
+                    # Build, create and start containers in a background
+                    docker build -t uiprojdockerimage .
+                  """
+
+
+          sh """#!/bin/bash -e
+            # Build, create and start containers in a background
+            docker-compose -f docker-compose.yml up -d
           """
-}
-}
-}
+          sh """#!/bin/bash -e
+            # Wait for chromemode to be up and execute selenium tests in robottests container
+            docker run -d --network="host" uiprojdockerimage mvn clean test-DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml
+          """
+        } finally {
+          publishHTML target: [
+          allowMissing: false,
+          alwaysLinkToLastBuild: true,
+          keepAll: true,
+          reportDir: 'reports',
+          reportFiles: 'report.html',
+          reportName: 'UI Test Execution Report'
+          ]
+          junit 'reports/*.xml'
+
+          sh """#!/bin/bash
+            # Stop and remove the containers
+            docker-compose -f docker-compose.yml down --rmi all
+          """
+        }
+      }
+    }
+  }
 }

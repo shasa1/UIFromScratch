@@ -1,4 +1,4 @@
-package com.Salmon.Modules;
+package com.salmon.Test;
 
 
 import org.apache.commons.lang3.StringUtils;
@@ -7,15 +7,14 @@ import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.ITestContext;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.Provider;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,7 +24,7 @@ public class TestSmoke {
     String appURL = "http://google.com";
     public Logger LOG         = null;
     static Date s_refDate;
-    protected final String               LOG_FILE    = "console.log";
+    protected final String               LOG_FILE    = "salman.log";
 
     @BeforeSuite
     public void onTestStart(ITestContext context){
@@ -64,24 +63,11 @@ public class TestSmoke {
     }
 
     @BeforeTest
-    @Parameters({"browser"})
-    public void testSetUp(@Optional("Chrome") String browser) throws MalformedURLException {
-        if(!browser.equalsIgnoreCase("Remote")) {
-            System.setProperty("webdriver.chrome.driver", "src/main/resources/Drivers/chromedriver.exe");
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("start-maximized");
-            driver = new ChromeDriver(options);
-        }else{
-            ChromeOptions options2 = new ChromeOptions();
-            //FirefoxOptions options2 = new FirefoxOptions();
-
-            options2.addArguments("--disable-dev-shm-usage");
-            options2.addArguments("--no-sandbox");
-            options2.addArguments("start-maximized");
-
-            //c.setPlatform(Platform.WINDOWS);
-            driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options2);
-        }
+    public void testSetUp() {
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/Drivers/chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("start-maximized");
+        driver = new ChromeDriver(options);
     }
 
     @Test

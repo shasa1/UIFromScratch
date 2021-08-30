@@ -15,7 +15,7 @@ pipeline {
 
     stage("Execute DockerFile") {
       steps {
-      sudo docker build -t uiprojdockerimage$BUILD_NUMBER .
+      sudo docker build -t uiprojdockerimage .
       }
     }
 

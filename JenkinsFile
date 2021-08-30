@@ -18,26 +18,29 @@ pipeline {
 
        bat "docker build -t uiprojdockerimage$BUILD_NUMBER ."
 
-      }
-    }
+        }
+   }
 
-    stage('Run Selenium Tests') {
+    stage('Execute Docker Compose') {
       steps {
 
            bat "docker-compose -f docker-compose.yml up -d"
-
-
-
+             }
+                                    }
+    stage('Execute Selenium Test') {
+      steps {
             bat "docker run -d uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=SmokeSuite.xml"
 
-}
-}
+            }
+                                }
  stage('Delete Docker Images') {
       steps {
 
            bat "docker-compose -f docker-compose.yml down --rmi all"
-}
-       }
+
+           bat "docker rmi -f uiprojdockerimage$BUILD_NUMBER"
+            }
+                            }
 
     }
   }

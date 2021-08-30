@@ -1,0 +1,14 @@
+pipeline{
+agent {dockerfile true}
+
+stages{
+stage('Test'){
+steps{
+ sh """#!/bin/bash -e
+            # Wait for chromemode to be up and execute selenium tests in robottests container
+            docker run -d --network="host" uiprojdockerimage mvn test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml
+          """
+}
+}
+}
+}

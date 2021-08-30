@@ -39,7 +39,9 @@ pipeline {
             # Wait for chromemode to be up and execute selenium tests in robottests container
             docker run -d --network="host" uiprojdockerimage mvn clean test-DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml
           """
-        } finally {
+        } catch(all) {
+                 currentBuild.result = 'FAILURE'
+             }    finally {
           publishHTML target: [
           allowMissing: false,
           alwaysLinkToLastBuild: true,

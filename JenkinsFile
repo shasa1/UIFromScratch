@@ -15,9 +15,9 @@ pipeline {
 
     stage("Execute DockerFile") {
       steps {
-      sh """
-       docker build -t uiprojdockerimage .
-      """
+
+       bat "docker build -t uiprojdockerimage ."
+
       }
     }
 

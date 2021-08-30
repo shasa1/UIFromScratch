@@ -15,35 +15,32 @@ pipeline {
 
     stage("Cleaning and preparing") {
       steps {
-        sh """#!/bin/bash -e
-          git clean -dfx
-          mkdir reports
-        """
+       
       }
     }
 
     stage('Run Selenium Tests') {
       steps {
 
-        sh """#!/bin/bash -e
+
                     # Build, create and start containers in a background
-                    docker build -t uiprojdockerimage .
-                  """
+                     sh "docker build -t uiprojdockerimage ."
 
 
-          sh """#!/bin/bash -e
+
+
             # Build, create and start containers in a background
-            docker-compose -f docker-compose.yml up -d
-          """
-          sh """#!/bin/bash -e
-            # Wait for chromemode to be up and execute selenium tests in robottests container
-            docker run -d --network="host" uiprojdockerimage mvn clean test-DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml
-          """
+           sh "docker-compose -f docker-compose.yml up -d"
 
-          sh """#!/bin/bash
+
+            # Wait for chromemode to be up and execute selenium tests in robottests container
+            sh "docker run -d --network="host" uiprojdockerimage mvn clean test-DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
+
+
+
             # Stop and remove the containers
-            docker-compose -f docker-compose.yml down --rmi all
-          """
+           sh "docker-compose -f docker-compose.yml down --rmi all"
+
         }
       }
     }

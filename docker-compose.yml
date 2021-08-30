@@ -5,7 +5,7 @@ services:
     image: selenium/hub
     ports:
       - "4444:4444"
-
+    network_mode: host
     environment:
       GRID_MAX_SESSION: 16
       GRID_BROWSER_TIMEOUT: 3000
@@ -25,6 +25,7 @@ services:
       - /dev/shm:/dev/shm
     ports:
       - "5900:5900"
+    network_mode: host
     links:
       - hub
 
@@ -42,5 +43,6 @@ services:
       - /dev/shm:/dev/shm
     ports:
       - "5901:5900"
+    network_mode: host
     links:
       - hub

@@ -16,27 +16,29 @@ pipeline {
     stage("Execute DockerFile") {
       steps {
 
-       bat "docker build -t uiprojdockerimage ."
+       bat "docker build -t uiprojdockerimage$BUILD_NUMBER ."
 
       }
     }
 
-    //stage('Run Selenium Tests') {
-     // steps {
+    stage('Run Selenium Tests') {
+      steps {
 
-      //     sh "docker-compose -f docker-compose.yml up -d"
-
-
-
-      //      sh "docker run -d uiprojdockerimage mvn clean test -DsuiteXMLFile=SmokeSuite.xml"
+           bat "docker-compose -f docker-compose.yml up -d"
 
 
 
+            bat "docker run -d uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=SmokeSuite.xml"
 
-    //       sh "docker-compose -f docker-compose.yml down --rmi all"
+}
+}
+ stage('Delete Docker Images') {
+      steps {
 
-     //   }
-     // }
+           bat "docker-compose -f docker-compose.yml down --rmi all"
+}
+       }
+
     }
   }
 

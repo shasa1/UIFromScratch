@@ -41,10 +41,10 @@ pipeline {
                alwaysLinkToLastBuild: true,
                keepAll: true,
                reportDir: 'test-output',
-               reportFiles: '*.html',
+               reportFiles: '**/test-output/*.html',
                reportName: 'UIFromScratch Test Execution Report'
                ]
-               junit 'test-output/*.xml'
+               junit '**/test-output/*.html'
       }
             }
 

@@ -49,9 +49,10 @@ pipeline {
 
      post {
                         always {
+                          archiveArtifacts artifacts: 'output/**'
                           junit(
                             allowEmptyResults: true,
-                            testResults: 'target/surefire-reports/*.html'
+                            testResults: '**/test-output/*.html'
                           )
                         }
                         }

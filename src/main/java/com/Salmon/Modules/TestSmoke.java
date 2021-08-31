@@ -35,7 +35,7 @@ public class TestSmoke {
          */
 
         // generate log directory
-        String username = System.getProperty( "USERNAME" );
+        String username = System.getProperty("USERNAME");
         String m_logpath = "LogFiles" + File.separator + getReferenceTime("yyyyMM" + File.separator + "yyyyMMddHHmmss") + (StringUtils.isEmpty(username) ? "" : "_" + username) + File.separator + context.getName() + File.separator;
 
         // create log directory

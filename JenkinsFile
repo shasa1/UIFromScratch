@@ -16,7 +16,7 @@ pipeline {
     stage("Execute DockerFile") {
       steps {
 
-       bat "docker build -t uiprojdockerimage$BUILD_NUMBER ."
+       bat "docker build -t uiprojdockerimage37 ."
 
         }
    }
@@ -29,7 +29,7 @@ pipeline {
                                     }
     stage('Execute Selenium Test') {
       steps {
-            bat "docker run -d --network=host uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
+            bat "docker run -d --network=host uiprojdockerimage37 mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
             }
 
 
@@ -51,7 +51,7 @@ pipeline {
                         always {
                           junit(
                             allowEmptyResults: true,
-                            testResults: 'target/surefire-reports/*.xmls'
+                            testResults: 'target/surefire-reports/*.html'
                           )
                         }
                         }

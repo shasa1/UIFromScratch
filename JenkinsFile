@@ -31,14 +31,7 @@ pipeline {
       steps {
             bat "docker run -d --network=host uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
             }
-             post {
-                    always {
-                      junit(
-                        allowEmptyResults: true,
-                        testResults: '**/*reports/*.xml'
-                      )
-                    }
-                    }
+
 
 }
 
@@ -53,6 +46,15 @@ pipeline {
 //                             }
 
     }
+
+     post {
+                        always {
+                          junit(
+                            allowEmptyResults: true,
+                            testResults: 'target/surefire-reports/*.xmls'
+                          )
+                        }
+                        }
 
   }
 

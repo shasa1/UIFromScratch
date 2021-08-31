@@ -38,12 +38,6 @@ pipeline {
       }
             }
                                 }
-    stage('Execute Selenium Test') {
-     steps {
-            bat "docker run -d --network=host uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
-
-            }
-                                    }
 //  stage('Delete Docker Images') {
 //       steps {
 //

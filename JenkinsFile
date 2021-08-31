@@ -40,7 +40,7 @@ pipeline {
                reportFiles: '*.html',
                reportName: 'UIFromScratch Test Execution Report'
                ]
-               junit 'test-output/*.xml
+               junit 'test-output/*.xml'
       }
             }
                                 }

@@ -10,7 +10,9 @@
 	<name>Salmons UI Auto Framework</name>
 
 	<build>
+
 		<plugins>
+
 			<!-- Compiler plug-in -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -21,19 +23,23 @@
 				</configuration>
 			</plugin>
 			<!-- Below plug-in is used to execute tests -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.18.1</version>
-				<configuration>
-					<suiteXmlFiles>
-						<!-- TestNG suite XML files -->
-						<suiteXmlFile>SmokeSuite.xml</suiteXmlFile>
-					</suiteXmlFiles>
-				</configuration>
-			</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M5</version>
+					<configuration>
+						<suiteXmlFiles>
+							<!-- TestNG suite XML files -->
+							<suiteXmlFile>${project.basedir}/SmokeSuite.xml</suiteXmlFile>
+						</suiteXmlFiles>
+					</configuration>
+				</plugin>
+
 		</plugins>
+
 	</build>
+
 	<!-- Include the following dependencies -->
 	<dependencies>
 		<dependency>
@@ -68,5 +74,6 @@
 			<version>1.7.32</version>
 		</dependency>
 	</dependencies>
+
 
 </project>

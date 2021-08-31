@@ -35,6 +35,13 @@ pipeline {
 
 }
 
+ stage('Results') {
+ steps{
+       junit '**/target/surefire-reports/TEST-*.xml'
+       archive 'target/*.jar'
+    }
+    }
+
 
 //  stage('Delete Docker Images') {
 //       steps {
@@ -47,15 +54,7 @@ pipeline {
 
     }
 
-     post {
-                        always {
-                          archiveArtifacts artifacts: 'output/**'
-                          junit(
-                            allowEmptyResults: true,
-                            testResults: '**/test-output/*.html'
-                          )
-                        }
-                        }
+
 
   }
 

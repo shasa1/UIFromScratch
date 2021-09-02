@@ -32,14 +32,16 @@ pipeline {
       steps {
             bat "docker run -d --network=host uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
             }
+
+            post {
+                            success {
+                                junit '**/target/surefire-reports/TEST-*.xml'
+                                       archive 'target/*.jar'
+                            }
+                        }
 }
 
- post {
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                           archive 'target/*.jar'
-                }
-            }
+
 
 //  stage('Results') {
 //  steps{

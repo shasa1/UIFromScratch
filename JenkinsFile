@@ -7,6 +7,7 @@ pipeline {
   }
 
   stages {
+
     stage("Checkout") {
       steps {
         checkout scm
@@ -16,7 +17,7 @@ pipeline {
     stage("Execute DockerFile") {
       steps {
 
-       bat "docker build -t uiprojdockerimage37 ."
+       bat "docker build -t uiprojdockerimage$BUILD_NUMBER ."
 
         }
    }
@@ -29,18 +30,23 @@ pipeline {
                                     }
     stage('Execute Selenium Test') {
       steps {
-            bat "docker run -d --network=host uiprojdockerimage37 mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
+            bat "docker run -d --network=host uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
             }
-
-
 }
 
- stage('Results') {
- steps{
-       junit '**/target/surefire-reports/TEST-*.xml'
-       archive 'target/*.jar'
-    }
-    }
+ post {
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                           archive 'target/*.jar'
+                }
+            }
+
+//  stage('Results') {
+//  steps{
+//        junit '**/target/surefire-reports/TEST-*.xml'
+//        archive 'target/*.jar'
+//     }
+//    }
 
 
 //  stage('Delete Docker Images') {

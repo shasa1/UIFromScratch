@@ -1,0 +1,68 @@
+#!/usr/bin/env groovy
+pipeline {
+  agent any
+
+  environment {
+    TAG = "demo_${env.BRANCH_NAME}_${env.BUILD_NUMBER}"
+  }
+
+  stages {
+
+    stage("Checkout") {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage("Execute DockerFile") {
+      steps {
+
+       bat "docker build -t uiprojdockerimage$BUILD_NUMBER ."
+
+        }
+   }
+
+    stage('Execute Docker Compose') {
+      steps {
+
+           bat "docker-compose -f docker-compose.yml up -d"
+             }
+                                    }
+    stage('Execute Selenium Test') {
+      steps {
+            bat "docker run -d --network=host uiprojdockerimage$BUILD_NUMBER mvn clean test -DsuiteXMLFile=/temp/salmon/UIFromScratch/SmokeSuite.xml"
+            }
+
+            post {
+                            success {
+                                junit '**/target/surefire-reports/TEST-*.xml'
+                                       archive 'target/*.jar'
+                            }
+                        }
+}
+
+
+
+//  stage('Results') {
+//  steps{
+//        junit '**/target/surefire-reports/TEST-*.xml'
+//        archive 'target/*.jar'
+//     }
+//    }
+
+
+//  stage('Delete Docker Images') {
+//       steps {
+//
+//            bat "docker-compose -f docker-compose.yml down --rmi all"
+//
+//            bat "docker rmi -f uiprojdockerimage$BUILD_NUMBER"
+//             }
+//                             }
+
+    }
+
+
+
+  }
+
